@@ -1,0 +1,19 @@
+class Product:
+    '''
+    Attributes:
+        product_name (str):
+        sku (str): Stock keeping unit, barcode number
+        color (str):
+        length (int): product length in cm
+        width (int): product width in cm
+        height (int): product height in cm
+        date (str): date of order (MM/DD/YYYY)
+    '''
+    def ___init__(self, product_name, sku, color, length, width, height, date):
+        self.product_name = product_name
+        self.sku = sku
+        self.color = color
+        self.length = length
+        self.width = width
+        self.height = height
+        self.date = date
