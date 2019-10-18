@@ -1,15 +1,15 @@
 class Product:
     '''
     Attributes:
-        product_name (str):
+        product_name (str): name of product
         sku (str): Stock keeping unit, barcode number
-        color (str):
+        color (str): color of product
         length (int): product length in cm
         width (int): product width in cm
         height (int): product height in cm
         date (str): date of order (MM/DD/YYYY)
     '''
-    def ___init__(self, product_name, sku, color, length, width, height, date):
+    def __init__(self, product_name, sku, color, length, width, height, date):
         self.product_name = product_name
         self.sku = sku
         self.color = color
@@ -17,3 +17,6 @@ class Product:
         self.width = width
         self.height = height
         self.date = date
+    
+    def __str__(self):
+        return (f"{self.product_name}, {self.sku}")
