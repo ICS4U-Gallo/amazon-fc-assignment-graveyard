@@ -1,20 +1,26 @@
+import sys
+
+from PyQt5.QtWidgets import QDialog, QApplication
+from PyQt5.uic import loadUi
+
 
 class Product:
-    def __init__(self, name, price, image, manufacturer, type, serial_number, barcode, size, shelf, comps):
+    def __init__(self, name, price, image, manufacturer, type, itemid, barcode, size):
         self.name = name
         self.price = price
         self.image = image
         self.manufacturer = manufacturer
         self.type = type
-        self.number = serial_number
+        self.itemid = itemid
         self.barcode = barcode
         self.size = size
         self.status = None
-        self.shelf = shelf
-        self.comps = comps
+
+    def __repr__(self):
+        return self.get_info()
 
     def get_info(self):
-        return "Name: {0} Product# {1} ${2}".format(self.name, self.number, self.price)
+        return "Name: {0} Product# {1} ${2}".format(self.name, self.itemid, self.price)
 
     def set_status(self, status):
         self.status = status
@@ -22,55 +28,122 @@ class Product:
     def get_status(self):
         return self.status
 
-
-class Holder:
-    def __init__(self, number, maxitem, status):
-        self.number = number
-        self.maxitem = maxitem
-        self.hold = []
-        self.status = status
-
-    def set_status(self, status):
-        self.status = status
-
-    def place_item(self, item):
-        print("Abc")
-        self.hold.append(item)
-        print(self.hold)
-
-class Compartment(Holder):
-    def __init__(self, number, maxitem, status, location):
-        super().__init__(number, maxitem, status)
-        self.location = location
-
-    def create_shelf(self):
-        for i in range(self.maxitem):
-            self.hold.append(Shelf(i, 10, self.number, "comp"))
-
 class Order:
     pass
 
-class Shelf(Holder):
-    def __init__(self, number, maxitem, comp, status):
-        super().__init__(number, maxitem, status)
-        self.comp = comp
+class Shelf:
+    shelfs = []
+    def __init__(self, shelfid):
+        self.shelfid = shelfid
+        self.comp = {"A": [], "B": []}
+        Shelf.shelfs.append(self)
 
-    def scan_out(self, item):
-        self.hold.remove(item)
+    def scan_in(self, item, compartment):
+        self.comp[compartment].append(item)
 
+    def scan_out(self, item, box):
+        for c in self.comp:
+            if item in self.comp[c]:
+                self.comp[c].remove(item)
+                box.put_in(item)
+                item.set_status("Box#: {0}".format(box.boxid))
+                break
 
-class Bin(Holder):
-    def __init__(self, number, maxitem, status):
-        super().__init__(number, maxitem, status)
+    def show_comp(self, compartment):
+        return self.comp[compartment]
 
-class Box(Holder):
-    def __init__(self, barcode, address, number, maxitem, status):
-        super().__init__(number, maxitem, status)
-        self.barcode = barcode
-        self.address = address
+class Trolly:
+    def __init__(self, trollyid):
+        self.trollyid = trollyid
+        self.items = []
+
+    def scan_onto(self, item):
+        self.items.append(item)
+
+    def scan_out(self, item, shelfid, compartment):
+        self.items.remove(item)
+        for s in Shelf.shelfs:
+            if s.shelfid == shelfid:
+                s.scan_in(item, compartment)
+                item.set_status("Shelf#: {0}; Compartment#: {1}.".format(shelfid, compartment))
+
+class Box:
+    def __init__(self, boxid, info):
+        self.boxid = boxid
+        self.info = info
+        self.items = []
 
     def get_info(self):
-        return "box number {0} with {1} items".format(self.number, len(self.hold))
+        return "box number {0} with {1} items".format(self.boxid, len(self.items))
+
+    def put_in(self, item):
+        self.items.append(item)
+
+
+# if __name__ == "__main__":
+#     s1 = Shelf(1)
+#     t1 = Trolly(1)
+#     p = Product(1,1,1,1,1,123,1,1)
+#
+#     t1.scan_onto(p)
+#     print(t1.items)
+#     t1.scan_out(p, 1, "A")
+#     print(s1.comp)
+#     print(t1.items)
+#     print(p.get_status())
+#     print(s1.show_comp("A"))
+#     print()
+#     b1 = Box(1,"asdf")
+#     s1.scan_out(p, b1)
+#     print(s1.comp)
+#     print(p.get_status())
+#     print(b1.items)
+class MainPage2(QDialog):
+    def __init__(self):
+        super(MainPage2, self).__init__()
+        loadUi("test.ui", self)
+
+
+class MainPage(QDialog):
+    def __init__(self):
+        super(MainPage, self).__init__()
+        loadUi("scan_in_shelf.ui", self)
+        self.okButton.clicked.connect(self.asdf)
+        self.backButton.clicked.connect(self.new)
+
+    def asdf(self):
+        shelfid = self.shelfid.toPlainText()
+        compartment = self.compartment.toPlainText()
+        t1.scan_out(p, shelfid, compartment)
+
+    def new(self):
+        widget = MainPage2()
+        widget.exec_()
+
+
+if __name__ == "__main__":
+    s1 = Shelf(1)
+    t1 = Trolly(1)
+    p = Product(1, 1, 1, 1, 1, 123, 1, 1)
+
+    t1.scan_onto(p)
+    #    print(t1.items)
+    #    t1.scan_out(p, 1, "A")
+    #    print(s1.comp)
+    #    print(t1.items)
+    #    print(p.get_status())
+    #    print(s1.show_comp("A"))
+    #    print()
+    #    b1 = Box(1,"asdf")
+    #    s1.scan_out(p, b1)
+    #    print(s1.comp)
+    #    print(p.get_status())
+    #    print(b1.items)
+
+    app = QApplication(sys.argv)
+    widget = MainPage()
+    widget.show()
+    sys.exit(app.exec_())
 
 
 class Warehouse:
@@ -129,10 +202,5 @@ class Warehouse:
     #         return "Already Exist"
 
 
-if __name__ == "__main__":
-    amazon = Warehouse("Amazon")
-    amazon.set_comps(1)
-    p = Product(1,1,1,1,1,1,1,1,amazon.comps[0],amazon.comps[0].hold[1])
-    amazon.place_into_shelf(p)
-    print(amazon.comps[0].hold[1].hold)
+
 
