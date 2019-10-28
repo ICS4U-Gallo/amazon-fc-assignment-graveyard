@@ -36,7 +36,19 @@ class Shelf:
     def __init__(self, shelfid):
         self.shelfid = shelfid
         self.comp = {"A": [], "B": []}
-        Shelf.shelfs.append(self)
+        if len(Shelf.shelfs) == 0:
+            Shelf.shelfs.append(self)
+            print("jia")
+        else:
+            flag = True
+            for shelf in Shelf.shelfs:
+                if self.shelfid == shelf.shelfid:
+                    flag = False
+            if flag:
+                Shelf.shelfs.append(self)
+                print(Shelf.shelfs)
+
+
 
     def scan_in(self, item, compartment):
         self.comp[compartment].append(item)
@@ -102,31 +114,50 @@ class MainPage2(QDialog):
     def __init__(self):
         super(MainPage2, self).__init__()
         loadUi("test.ui", self)
+        self.pushButton.clicked.connect(self.asdf)
+    def asdf(self):
+        s1 = Shelf(self.shelfid.toPlainText())
 
+
+
+
+
+class MainPage3(QDialog):
+    def __init__(self):
+        super(MainPage3, self).__init__()
+        loadUi("asdf.ui", self)
+
+        self.button.clickeed.connect(self.new)
+    def new(self):
+        print("hello")
 
 class MainPage(QDialog):
     def __init__(self):
         super(MainPage, self).__init__()
         loadUi("scan_in_shelf.ui", self)
         self.okButton.clicked.connect(self.asdf)
+        self.okButton.clicked.connect(self.new)
         self.backButton.clicked.connect(self.new)
 
     def asdf(self):
         shelfid = self.shelfid.toPlainText()
         compartment = self.compartment.toPlainText()
-        t1.scan_out(p, shelfid, compartment)
+        # t1.scan_out(p, shelfid, compartment)
+
 
     def new(self):
         widget = MainPage2()
         widget.exec_()
+        widget2 = MainPage3()
+        widget2.exec_()
 
 
 if __name__ == "__main__":
-    s1 = Shelf(1)
-    t1 = Trolly(1)
+    # s1 = Shelf(1)
+    # t1 = Trolly(1)
     p = Product(1, 1, 1, 1, 1, 123, 1, 1)
 
-    t1.scan_onto(p)
+    # t1.scan_onto(p)
     #    print(t1.items)
     #    t1.scan_out(p, 1, "A")
     #    print(s1.comp)
