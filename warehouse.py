@@ -27,31 +27,7 @@ class Product:
 
     def get_status(self):
         return self.status
-
-class Product:
-    def __init__(self, name, price, image, manufacturer, type, itemid, barcode, size):
-        self.name = name
-        self.price = price
-        self.image = image
-        self.manufacturer = manufacturer
-        self.type = type
-        self.itemid = itemid
-        self.barcode = barcode
-        self.size = size
-        self.status = None
-
-    def __repr__(self):
-        return self.get_info()
-
-    def get_info(self):
-        return "Name: {0} Product# {1} ${2}".format(self.name, self.itemid, self.price)
-
-    def set_status(self, status):
-        self.status = status
-
-    def get_status(self):
-        return self.status
-
+    
         
 class Order:
     """
