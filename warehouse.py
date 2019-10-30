@@ -28,8 +28,72 @@ class Product:
     def get_status(self):
         return self.status
 
+class Product:
+    def __init__(self, name, price, image, manufacturer, type, itemid, barcode, size):
+        self.name = name
+        self.price = price
+        self.image = image
+        self.manufacturer = manufacturer
+        self.type = type
+        self.itemid = itemid
+        self.barcode = barcode
+        self.size = size
+        self.status = None
+
+    def __repr__(self):
+        return self.get_info()
+
+    def get_info(self):
+        return "Name: {0} Product# {1} ${2}".format(self.name, self.itemid, self.price)
+
+    def set_status(self, status):
+        self.status = status
+
+    def get_status(self):
+        return self.status
+
+        
 class Order:
-    pass
+    """
+    Attrs:
+         order_id(int): order identification
+         date_created(str): Date manufactured
+         date_shipped(str): 
+         customer_name(str): Customer's name
+         customer_id(str): Customer's identification
+         status(str):
+         shipping_id(int): Shipping identification
+    """
+
+    num_order = 0
+
+    def __init__(self, order_id: int, itemid: int, date_created: str, date_shipped: str, customer_name: str, customer_id: str, status: str, shipping_id: int, quantity: int, sub_total: int):
+        self.order_id = order_id
+        self.order_num = Order.num_order
+        Order.num_order += 1
+        self.itemid = itemid
+        self.date_created = date_created
+        self.date_shipped = date_shipped
+        self.customer_name = customer_name
+        self.customer_id = customer_id
+        self.status = None 
+        self.shipping_id = shipping_id
+        self.quantity = quantity
+        self.sub_total = sub_total
+
+
+    def set_status(self, status):
+       self.status = status
+
+    def get_status(self):
+        return self.status
+    
+    def __str__(self):
+        return f"{self.customer_name}, your order number {self.order_id} has been confirmed, total price: {self.sub_total}."
+
+    def calc_price(self, product: Product):
+        self.sub_total = product.price * self.quantity
+    
 
 class Shelf:
     shelfs = []
@@ -49,11 +113,10 @@ class Shelf:
                 print(Shelf.shelfs)
 
 
-
     def scan_in(self, item, compartment):
         self.comp[compartment].append(item)
 
-    def scan_out(self, item, box):
+    def take_out(self, item, box):
         for c in self.comp:
             if item in self.comp[c]:
                 self.comp[c].remove(item)
@@ -68,6 +131,7 @@ class Trolly:
     def __init__(self, trollyid):
         self.trollyid = trollyid
         self.items = []
+        self.truck_box = []
 
     def scan_onto(self, item):
         self.items.append(item)
@@ -78,6 +142,31 @@ class Trolly:
             if s.shelfid == shelfid:
                 s.scan_in(item, compartment)
                 item.set_status("Shelf#: {0}; Compartment#: {1}.".format(shelfid, compartment))
+
+    def ship_out(self, item, shelfid, compartment):
+        for s in Shelf.shelfs:
+            if Order.itemid == Product.itemid:
+                s.take_out(item)
+                s.scan_onto(item)
+    
+    def truck(self, item):
+        for item in items:
+            self.items.remove(item)
+            self.truck_box.append(item)
+    
+            if len(truck_box) == 20:
+                for item in items:
+                    self.truck_box.remove(item)
+                    break
+                print("Items have been successfully shipped out")
+
+        
+
+
+            
+
+
+
 
 class Box:
     def __init__(self, boxid, info):
