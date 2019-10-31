@@ -46,7 +46,8 @@ def test_Trolly():
     trolly = Trolly(5123)
     assert trolly.trollyid == 5123
 
-def test_Box():box_2297 = Box(2297, "medium size")
+def test_Box():
+    box_2297 = Box(2297, "medium size")
     assert box_2297.get_info() == "box number 2297 with 0 items"
     assert box_2297.boxid == 2297
     box_2297.put_in("screwdriver")
