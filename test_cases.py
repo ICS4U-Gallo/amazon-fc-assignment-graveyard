@@ -1,7 +1,19 @@
 from warehouse import *
 
 def test_Product():
-    pass
+    screwdriver = Product("Flat Tip Screwdriver", 5.99, "image", "Craftsman", "Screwdriver", 11223344, "barcode", "3x4x1")
+    assert screwdriver.get_info() == "Name: Flat Tip Screwdriver Product# 11223344 $5.99"
+    assert screwdriver.get_status() == None
+    assert screwdriver.manufacturer == "Craftsman"
+    screwdriver.set_status("purchased")
+    assert screwdriver.get_status() == "purchased"
+
+    phone = Product("Cordless Phone", 29.99, "image", "Panasonic", "Home Phone", 56764523, "barcode", "5x5x5")
+    assert phone.get_info() == "Name: Cordless Phone Product# 56764523 $29.99"
+    assert phone.get_status() == None
+    assert phone.manufacturer == "Panasonic"
+    phone.set_status("purchased")
+    assert phone.get_status() == "purchased"
 
 
 def test_Order():
@@ -27,8 +39,19 @@ def test_Trolly():
     trolly = Trolly(5123)
     assert trolly.trollyid == 5123
 
-def test_Box():
-    pass
+def test_Box():box_2297 = Box(2297, "medium size")
+    assert box_2297.get_info() == "box number 2297 with 0 items"
+    assert box_2297.boxid == 2297
+    box_2297.put_in("screwdriver")
+    assert box_2297.items == ["screwdriver"]
+    assert box_2297.get_info() == "box number 2297 with 1 items"
+
+    box_7890 = Box(7890, "large size")
+    assert box_7890.get_info() == "box number 7890 with 0 items"
+    assert box_7890.info == "large size"
+    box_7890.put_in(phone)
+    box_7890.put_in(screwdriver)
+    assert box_7890.get_info() == "box number 7890 with 2 items"
 
 
 def test_Warehouse():
