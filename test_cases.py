@@ -12,8 +12,8 @@ def test_Product():
     assert phone.get_info() == "Name: Cordless Phone Product# 56764523 $29.99"
     assert phone.get_status() == None
     assert phone.manufacturer == "Panasonic"
-    phone.set_status("purchased")
-    assert phone.get_status() == "purchased"
+    phone.set_status("in progress")
+    assert phone.get_status() == "in progress"
 
 
 def test_Order():
