@@ -29,7 +29,14 @@ def test_Order():
 
 
 def test_Shelf():
-    pass
+    shelf_10 = Shelf("10")
+    shelf_10.scan_in("screwdriver", "A")
+    shelf_10.scan_in("phone", "A")
+    assert shelf_10.show_comp("A") == ['screwdriver', 'phone']
+
+    shelf_2 = Shelf("2")
+    shelf_2.scan_in("phone", "B")
+    assert shelf_2.show_comp("B") == ['phone']
 
 
 def test_Trolly():
