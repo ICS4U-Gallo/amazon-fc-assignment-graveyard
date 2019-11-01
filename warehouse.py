@@ -19,6 +19,17 @@ class Product:
          size(str): The product size
     """
     def __init__(self, name, price, image, manufacturer, type, itemid, barcode, size):
+        """create a product object
+        Args:
+            name: the name of the product
+            price: the price of the product
+            image: the image of the product
+            manufacturer: the manufacturer of the product
+            type: product type
+            itemid: the product identification
+            barcode: the product barcode
+            size: the product size
+        """
         self.name = name
         self.price = price
         self.image = image
