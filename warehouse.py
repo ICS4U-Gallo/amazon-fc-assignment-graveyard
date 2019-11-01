@@ -252,7 +252,7 @@ class ScanIn(QDialog):
         loadUi("scan_in_shelf.ui", self)
         self.okButton.clicked.connect(self.into_shelf)
 
-    def into_shelf(self):
+    def into_shelf(self, AddProduct):
         pid = int(self.t_pid.toPlainText())
         shelfid = int(self.shelfid.toPlainText())
         compartment = self.compartment.toPlainText()
@@ -303,6 +303,23 @@ class ViewShelf(QDialog):
         self.l_show.setText(str(target_s))
         self.update()
 
+class AddProduct(QDialog):
+    def __init__(self):
+        super(AddProduct, self).__init__()
+        loadUi("create_product.ui", self)
+        self.ok_button.clicked.connect(self.create_product)
+
+    def create_product(self):
+        p_id = int(self.id_input.toPlainText())
+        name = str(self.n_input.toPlainText())
+        price = float(self.p_input.toPlainText())
+        type = str(self.t_input.toPlainText())
+        bar = int(self.b_input.toPlainText())
+        p = Product(name, price, 1, 1, type, p_id, bar, 1)
+        print("successfully added a product")
+        t1.scan_onto(p)
+        print("successfully scanned into trolly")
+
 
 class Admin(QDialog):
     def __init__(self):
@@ -312,6 +329,7 @@ class Admin(QDialog):
         self.scan_in_shelf.clicked.connect(self.p_scan_in)
         self.scan_out_shelf.clicked.connect(self.p_out_p)
         self.view_shelf.clicked.connect(self.p_view_shelf)
+        self.add_product.clicked.connect(self.p_add)
 
     def p_scan_in(self):
         w = ScanIn()
@@ -329,16 +347,19 @@ class Admin(QDialog):
         w = ViewShelf()
         w.exec_()
 
+    def p_add(self):
+        w = AddProduct()
+        w.exec_()
 
 if __name__ == "__main__":
     customer = {}
     admin = {}
-    s1 = Shelf(1)
     t1 = Trolly(1)
-    p = Product(1, 1, 1, 1, 1, 123, 1, 1)
-    p2 = Product("cat", 1, 1, 1, 1, 321, 1, 1)
-    t1.scan_onto(p)
-    t1.scan_onto(p2)
+    s1 = Shelf(1)
+
+    # p = Product(1, 1, 1, 1, 1, 123, 1, 1)
+    # p2 = Product("cat", 1, 1, 1, 1, 321, 1, 1)
+    # t1.scan_onto(p2)
     #    print(t1.items)
     #    t1.scan_out(p, 1, "A")
     #    print(s1.comp)
