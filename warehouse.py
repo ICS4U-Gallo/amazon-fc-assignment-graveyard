@@ -46,7 +46,7 @@ class Order:
 
     num_order = 0
 
-    def __init__(self, order_id: int, itemid: int, date_created: str, date_shipped: str, customer_name: str, customer_id: str, status: str, shipping_id: int, quantity: int, sub_total: int):
+    def __init__(self, order_id: int, itemid: int, date_created: str, date_shipped: str, customer_name: str, customer_id: str, status: str, shipping_id: int):
         self.order_id = order_id
         self.order_num = Order.num_order
         Order.num_order += 1
@@ -57,8 +57,8 @@ class Order:
         self.customer_id = customer_id
         self.status = None 
         self.shipping_id = shipping_id
-        self.quantity = quantity
-        self.sub_total = sub_total
+        self.quantity = 1
+        self.sub_total = 1
 
 
     def set_status(self, status):
