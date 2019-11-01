@@ -2,4 +2,7 @@
   <qresource prefix="newPrefix">
     <file>8D4991568AB94C8FB6C7E1EFDA3073F3.jpg</file>
   </qresource>
+  <qresource prefix="newPrefix">
+    <file>shipping__CB507235775__jpg__1344°¡526_.jpg</file>
+  </qresource>
 </RCC>
