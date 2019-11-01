@@ -7,6 +7,17 @@ from PyQt5.uic import loadUi
 
 
 class Product:
+     """
+    Attrs:
+         name(str): The product's name
+         price(int): The product's price
+         image: The product's image
+         manufacturer(str): The product's manuacturer
+         type: product type
+         itemid(int): The product identification
+         barcode(int): The product's barcode
+         size(str): The product size
+    """
     def __init__(self, name, price, image, manufacturer, type, itemid, barcode, size):
         self.name = name
         self.price = price
