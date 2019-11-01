@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>Rivian_Rivian_amazontruck_a-640x354.jpg</file>
+  </qresource>
+</RCC>

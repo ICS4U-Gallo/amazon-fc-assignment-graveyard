@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>http___com.ft.imagepublish.prod.s3.amazonaws.jpg</file>
+  </qresource>
+</RCC>

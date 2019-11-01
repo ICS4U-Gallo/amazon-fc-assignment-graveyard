@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
-    <height>303</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,96 +16,96 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>90</y>
+     <x>30</x>
+     <y>70</y>
      <width>60</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Shelf#:</string>
+    <string>ID</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>110</y>
-     <width>101</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Compartment#:</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="shelfid">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>90</y>
-     <width>121</width>
-     <height>16</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="compartment">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>110</y>
-     <width>121</width>
-     <height>16</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>30</y>
-     <width>191</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Put this item into which shelf?</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="okButton">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>170</y>
-     <width>71</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>OK</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>70</y>
+     <x>30</x>
+     <y>100</y>
      <width>60</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>ProductID:</string>
+    <string>Comp</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="t_pid">
+  <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>70</y>
-     <width>121</width>
+     <x>30</x>
+     <y>130</y>
+     <width>60</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="text">
+    <string>PID</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="ID_edit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>70</y>
+     <width>104</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="Comp_edit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>100</y>
+     <width>104</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="PID_edit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>130</y>
+     <width>104</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>141</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Scan Out Shelf</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ok_Button">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>180</y>
+     <width>113</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>OK</string>
    </property>
   </widget>
  </widget>

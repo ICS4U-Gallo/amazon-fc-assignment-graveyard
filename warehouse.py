@@ -1,7 +1,9 @@
 import sys
-
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.uic import loadUi
+
+
 
 
 class Product:
@@ -27,6 +29,7 @@ class Product:
 
     def get_status(self):
         return self.status
+
     
         
 class Order:
@@ -69,33 +72,106 @@ class Order:
 
     def calc_price(self, product: Product):
         self.sub_total = product.price * self.quantity
-    
+
+class CreatePage(QDialog):
+    def __init__(self):
+        super(CreatePage, self).__init__()
+        loadUi("create_account.ui", self)
+
+        self.b_ok.clicked.connect(self.new_account)
+    def new_account(self):
+        name = self.t_name.toPlainText()
+        password = self.t_password.toPlainText()
+        type = self.t_type.toPlainText()
+        if type == "admin":
+            admin[name] = password
+        if type == "customer":
+            customer[name] = password
+        print("Successfully created")
+
+
+
+class LoginPage(QDialog):
+    def __init__(self):
+        super(LoginPage, self).__init__()
+        loadUi("login.ui", self)
+        self.login.clicked.connect(self.open_next)
+        self.exit.clicked.connect(self.close)
+        self.b_create.clicked.connect(self.create_page)
+
+    def create_page(self):
+        w = CreatePage()
+        w.exec_()
+    def open_next(self):
+        name = self.u_input.toPlainText()
+        password = self.p_input.toPlainText()
+        if name in admin and admin[name] == password:
+            w = Admin()
+            w.exec_()
+        elif name in customer and customer[name] == password:
+            w = OrderMain()
+            w.exec_()
+        else:
+            print("invalid username or password")
+    def close(self):
+        self.close()
+        # widget = MainPage2()
+        # widget.exec_()
+        # widget2 = MainPage3()
+        # widget2.exec_()
+
+
+class OrderMain(QDialog):
+    def __init__(self):
+        super(OrderMain, self).__init__()
+        loadUi("ORDER.ui", self)
+        self.pushButton.clicked.connect(self.next)
+        self.pushButton_2.clicked.connect(self.back)
+
+    def next(self):
+        self.hide()
+        s = ViewOrder()
+        s.exec_()
+
+    def back(self):
+        self.hide()
+        l = LoginPage()
+        l.exec_()
+
+
+class ViewOrder(QDialog):
+    def __init__(self):
+        super(ViewOrder, self).__init__()
+        loadUi("order1.ui", self)
+
+        self.pushButton.clicked.connect(self.back)
+
+    def back(self):
+        self.hide()
+        f = OrderMain()
+        f.exec_()
+
 
 class Shelf:
     shelfs = []
+
     def __init__(self, shelfid):
         self.shelfid = shelfid
         self.comp = {"A": [], "B": []}
-        if len(Shelf.shelfs) == 0:
-            Shelf.shelfs.append(self)
-            print("jia")
-        else:
-            flag = True
-            for shelf in Shelf.shelfs:
-                if self.shelfid == shelf.shelfid:
-                    flag = False
-            if flag:
-                Shelf.shelfs.append(self)
-                print(Shelf.shelfs)
+        Shelf.shelfs.append(self)
 
+    def __str__(self):
+        return str(self.comp)
 
     def scan_in(self, item, compartment):
         self.comp[compartment].append(item)
+        print("successfully put into shelf!")
 
-    def take_out(self, item, box):
+    def scan_out(self, item, box):
         for c in self.comp:
             if item in self.comp[c]:
                 self.comp[c].remove(item)
+                print("Successfully scaned out of the shelf# {0}!".format(self.shelfid))
                 box.put_in(item)
                 item.set_status("Box#: {0}".format(box.boxid))
                 break
@@ -103,11 +179,11 @@ class Shelf:
     def show_comp(self, compartment):
         return self.comp[compartment]
 
+
 class Trolly:
     def __init__(self, trollyid):
         self.trollyid = trollyid
         self.items = []
-        self.truck_box = []
 
     def scan_onto(self, item):
         self.items.append(item)
@@ -118,30 +194,7 @@ class Trolly:
             if s.shelfid == shelfid:
                 s.scan_in(item, compartment)
                 item.set_status("Shelf#: {0}; Compartment#: {1}.".format(shelfid, compartment))
-
-    def ship_out(self, item, shelfid, compartment):
-        for s in Shelf.shelfs:
-            if Order.itemid == Product.itemid:
-                s.take_out(item)
-                s.scan_onto(item)
-    
-    def truck(self, item):
-        for item in items:
-            self.items.remove(item)
-            self.truck_box.append(item)
-    
-            if len(truck_box) == 20:
-                for item in items:
-                    self.truck_box.remove(item)
-                    break
-                print("Items have been successfully shipped out")
-
-        
-
-
-            
-
-
+                print("successfully scan out of trolly!")
 
 
 class Box:
@@ -157,72 +210,135 @@ class Box:
         self.items.append(item)
 
 
-# if __name__ == "__main__":
-#     s1 = Shelf(1)
-#     t1 = Trolly(1)
-#     p = Product(1,1,1,1,1,123,1,1)
-#
-#     t1.scan_onto(p)
-#     print(t1.items)
-#     t1.scan_out(p, 1, "A")
-#     print(s1.comp)
-#     print(t1.items)
-#     print(p.get_status())
-#     print(s1.show_comp("A"))
-#     print()
-#     b1 = Box(1,"asdf")
-#     s1.scan_out(p, b1)
-#     print(s1.comp)
-#     print(p.get_status())
-#     print(b1.items)
-class MainPage2(QDialog):
+class ViewProduct(QDialog):
     def __init__(self):
-        super(MainPage2, self).__init__()
-        loadUi("test.ui", self)
-        self.pushButton.clicked.connect(self.asdf)
-    def asdf(self):
-        s1 = Shelf(self.shelfid.toPlainText())
+        super(ViewProduct, self).__init__()
+        loadUi("view_product.ui", self)
+        self.b_view.clicked.connect(self.p_product_info)
+
+    def p_product_info(self):
+        id = int(self.ID_edit.toPlainText())
+        w = ProductInfo()
+        w.set_info(id)
+        w.exec_()
 
 
-
-
-
-class MainPage3(QDialog):
+class ProductInfo(QDialog):
     def __init__(self):
-        super(MainPage3, self).__init__()
-        loadUi("asdf.ui", self)
+        super(ProductInfo, self).__init__()
+        loadUi("product_info.ui", self)
 
-        self.button.clickeed.connect(self.new)
-    def new(self):
-        print("hello")
+    def set_info(self, id):
+        b = True
+        for s in Shelf.shelfs:
+            for c in s.comp:
+                print(s.comp[c])
+                for p in s.comp[c]:
+                    print(p.itemid, id)
+                    if p.itemid == id:
+                        self.l_name.setText(str(p.name))
+                        self.l_id.setText(str(p.itemid))
+                        self.l_status.setText(str(p.status))
+                        b = False
+        if b:
+            self.l_name.setText("Not Found")
+            self.l_id.setText("Not Found")
+            self.l_status.setText("Not Found")
 
-class MainPage(QDialog):
+
+class ScanIn(QDialog):
     def __init__(self):
-        super(MainPage, self).__init__()
+        super(ScanIn, self).__init__()
         loadUi("scan_in_shelf.ui", self)
-        self.okButton.clicked.connect(self.asdf)
-        self.okButton.clicked.connect(self.new)
-        self.backButton.clicked.connect(self.new)
+        self.okButton.clicked.connect(self.into_shelf)
 
-    def asdf(self):
-        shelfid = self.shelfid.toPlainText()
+    def into_shelf(self):
+        pid = int(self.t_pid.toPlainText())
+        shelfid = int(self.shelfid.toPlainText())
         compartment = self.compartment.toPlainText()
-        # t1.scan_out(p, shelfid, compartment)
+        target_p = None
+        for i in t1.items:
+            if i.itemid == pid:
+                target_p = i
+                break
+        if target_p:
+            t1.scan_out(target_p, shelfid, compartment)
 
 
-    def new(self):
-        widget = MainPage2()
-        widget.exec_()
-        widget2 = MainPage3()
-        widget2.exec_()
+class ScanOut(QDialog):
+    def __init__(self):
+        super(ScanOut, self).__init__()
+        loadUi("scan_out_shelf.ui", self)
+        self.ok_Button.clicked.connect(self.message)
+        self.info.setText(str(Shelf.shelfs))
+
+    def message(self):
+        shelfid = int(self.ID_edit.toPlainText())
+        compartment = self.Comp_edit.toPlainText()
+        pid = int(self.PID_edit.toPlainText())
+        bid = int(self.BID_edit.toPlainText())
+        b = Box(bid, "hi")
+
+        for s in Shelf.shelfs:
+            if s.shelfid == shelfid:
+                for c in s.comp:
+                    for p in s.comp[c]:
+                        if p.itemid == pid:
+                            s.scan_out(p, b)
+
+
+class ViewShelf(QDialog):
+    def __init__(self):
+        super(ViewShelf, self).__init__()
+        loadUi("view_shelf.ui", self)
+        self.b_view.clicked.connect(self.view_shelf)
+
+    def view_shelf(self):
+        shelfid = int(self.t_shelfid.toPlainText())
+        target_s = None
+        for s in Shelf.shelfs:
+            if s.shelfid == shelfid:
+                target_s = s
+                break
+        self.l_show.setText(str(target_s))
+        self.update()
+
+
+class Admin(QDialog):
+    def __init__(self):
+        super(Admin, self).__init__()
+        loadUi("admin_page.ui", self)
+        self.view_product.clicked.connect(self.p_in_id)
+        self.scan_in_shelf.clicked.connect(self.p_scan_in)
+        self.scan_out_shelf.clicked.connect(self.p_out_p)
+        self.view_shelf.clicked.connect(self.p_view_shelf)
+
+    def p_scan_in(self):
+        w = ScanIn()
+        w.exec_()
+
+    def p_in_id(self):
+        w = ViewProduct()
+        w.exec_()
+
+    def p_out_p(self):
+        w = ScanOut()
+        w.exec_()
+
+    def p_view_shelf(self):
+        w = ViewShelf()
+        w.exec_()
 
 
 if __name__ == "__main__":
-    # s1 = Shelf(1)
-    # t1 = Trolly(1)
+    customer = {}
+    admin = {}
+    s1 = Shelf(1)
+    t1 = Trolly(1)
     p = Product(1, 1, 1, 1, 1, 123, 1, 1)
-
-    # t1.scan_onto(p)
+    p2 = Product("cat", 1, 1, 1, 1, 321, 1, 1)
+    t1.scan_onto(p)
+    t1.scan_onto(p2)
     #    print(t1.items)
     #    t1.scan_out(p, 1, "A")
     #    print(s1.comp)
@@ -237,66 +353,8 @@ if __name__ == "__main__":
     #    print(b1.items)
 
     app = QApplication(sys.argv)
-    widget = MainPage()
+    widget = LoginPage()
     widget.show()
     sys.exit(app.exec_())
-
-
-class Warehouse:
-    def get_shelf(self, shelf, comp):
-        return True
-        print((comp in self.comps))
-        if comp in self.comps and shelf in comp:
-            print("hello")
-            shelf.status = "place"
-            return True
-        print("hi!")
-        return False
-
-    def __init__(self, name):
-        self.name = name
-        self.comps = []
-        self.boxes = []
-
-    def set_comps(self, nums):
-        for i in range(nums):
-            c = Compartment(i, 10, None, i)
-            c.create_shelf()
-            self.comps.append(c)
-
-    def scan_product(self, product):
-        pass
-
-    # detail change
-    def place_into_shelf(self, product):
-        if self.get_shelf(product.shelf, product.comps):
-            print("hello!")
-            product.shelf.place_item(product)
-            product.shelf.status = "comp"
-            product.set_status("shelf")
-
-    def scan_out(self, product):
-        product.shelf.scan_out(product)
-        product.set_status("worker")
-
-    def abcd(self):
-        for i in self.comps:
-            for j in i.hold:
-                print(j.hold)
-
-    # def add_product(self, products):
-    #     flag = False
-    #     if len(self.warehouse) > 0:
-    #         for b in self.warehouse:
-    #             if b.number == products.number:
-    #                 flag = True
-    #
-    #     if not flag:
-    #         self.warehouse.append(products)
-    #         return "#" + products.number + " into the warehouse"
-    #     else:
-    #         return "Already Exist"
-
-
 
 
