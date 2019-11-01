@@ -54,10 +54,22 @@ class Order:
          status(str):
          shipping_id(int): Shipping identification
     """
-
     num_order = 0
 
     def __init__(self, order_id: int, itemid: int, date_created: str, date_shipped: str, customer_name: str, customer_id: str, status: str, shipping_id: int):
+        """Create an order object
+        Args:
+            order_id: order identification
+            item_id: product identification
+            date_created: date of production
+            date_shipped: date product was shipped
+            customer_name: the name of the customer
+            customer_id: the id of the customer
+            status: status of order
+            shipping_id: shipping identification
+            quantity: product quantity
+            sub_total: total price of the product
+        """
         self.order_id = order_id
         self.order_num = Order.num_order
         Order.num_order += 1
